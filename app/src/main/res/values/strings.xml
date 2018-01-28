@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Bitcoin Price Tracker</string>
+    <string name="edit_message">Enter Text</string>
+    <string name="button_submit">Submit</string>
+</resources>
