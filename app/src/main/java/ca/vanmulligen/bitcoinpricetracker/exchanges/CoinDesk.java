@@ -16,11 +16,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CoinDesk implements IExchange {
-    static final String url = "https://api.coindesk.com/v1/bpi/currentprice/CAD.json";
-    TextView textElement;
+    private final String url = "https://api.coindesk.com/v1/bpi/currentprice/CAD.json";
+    private TextView textElement;
 
     public void call(String currency, RequestQueue queue, View view, Activity activity, Callback callback){
-        textElement = (TextView) activity.findViewById(R.id.coinDeskPrice);
+        textElement = activity.findViewById(R.id.coinDeskPrice);
         final Callback cb = callback;
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -28,7 +28,7 @@ public class CoinDesk implements IExchange {
             public void onResponse(JSONObject response) {
                 String value = parseResponse(response);
 
-                textElement.setText("CoinDesk Price: "+ value);
+                textElement.setText(value);
                 cb.onSuccess();
             }
         }, new Response.ErrorListener() {

@@ -15,11 +15,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Coinbase implements IExchange {
-    static final String url = "https://api.coinbase.com/v2/prices/spot?currency=CAD";
-    TextView textElement;
+    private final String url = "https://api.coinbase.com/v2/prices/spot?currency=CAD";
+    private TextView textElement;
 
     public void call(String currency, RequestQueue queue, View view, Activity activity, Callback callback){
-        textElement = (TextView) activity.findViewById(ca.vanmulligen.bitcoinpricetracker.R.id.coinbasePrice);
+        textElement = activity.findViewById(ca.vanmulligen.bitcoinpricetracker.R.id.coinbasePrice);
         final Callback cb = callback;
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -27,7 +27,7 @@ public class Coinbase implements IExchange {
             public void onResponse(JSONObject response) {
                 String value = parseResponse(response);
 
-                textElement.setText("Coinbase Price: "+ value);
+                textElement.setText(value);
                 cb.onSuccess();
             }
         }, new Response.ErrorListener() {
