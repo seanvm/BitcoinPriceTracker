@@ -15,6 +15,11 @@ import ca.vanmulligen.bitcoinpricetracker.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
+
 public class CoinDesk implements IExchange {
     private final String url = "https://api.coindesk.com/v1/bpi/currentprice/CAD.json";
     private TextView textElement;
@@ -42,11 +47,21 @@ public class CoinDesk implements IExchange {
 
     public String parseResponse(JSONObject json){
         try {
-            return json.getJSONObject("bpi").getJSONObject("CAD").getString("rate");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            String bigNumber = json.getJSONObject("bpi").getJSONObject("CAD").getString("rate");
+            NumberFormat format = NumberFormat.getInstance(Locale.CANADA);
+            Number number = 0;
 
-        return "";
+            try {
+                number = format.parse(bigNumber);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            DecimalFormat df = new DecimalFormat("##,##0.00");
+            return df.format(number).toString();
+
+        } catch (JSONException e) {
+           return "0";
+        }
     }
 }
