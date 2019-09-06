@@ -22,7 +22,7 @@ public class Coinbase implements IExchange {
         textElement = (TextView) activity.findViewById(ca.vanmulligen.bitcoinpricetracker.R.id.coinbasePrice);
         final Callback cb = callback;
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 String value = parseResponse(response);

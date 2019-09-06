@@ -32,6 +32,11 @@ public class ExchangeService {
             @Override
             public void onSuccess() {
                 requestCounter--;
+                try{
+                    Thread.sleep(200);
+                }catch(InterruptedException e){
+                    System.out.println("Main thread interrupted");
+                }
                 if (requestCounter == 0) {
                     cb.onSuccess();
                 }
