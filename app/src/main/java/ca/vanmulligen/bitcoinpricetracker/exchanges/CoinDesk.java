@@ -1,8 +1,6 @@
-package com.example.bitcoinpricetracker.exchanges;
+package ca.vanmulligen.bitcoinpricetracker.exchanges;
 
 import android.app.Activity;
-import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,8 +9,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.bitcoinpricetracker.Callback;
-import com.example.bitcoinpricetracker.R;
+import ca.vanmulligen.bitcoinpricetracker.Callback;
+import ca.vanmulligen.bitcoinpricetracker.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;

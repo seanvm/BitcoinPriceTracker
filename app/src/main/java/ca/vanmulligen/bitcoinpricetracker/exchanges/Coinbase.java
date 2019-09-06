@@ -1,7 +1,6 @@
-package com.example.bitcoinpricetracker.exchanges;
+package ca.vanmulligen.bitcoinpricetracker.exchanges;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,8 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.bitcoinpricetracker.Callback;
-import com.example.bitcoinpricetracker.R;
+import ca.vanmulligen.bitcoinpricetracker.Callback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +19,7 @@ public class Coinbase implements IExchange {
     TextView textElement;
 
     public void call(String currency, RequestQueue queue, View view, Activity activity, Callback callback){
-        textElement = (TextView) activity.findViewById(R.id.coinbasePrice);
+        textElement = (TextView) activity.findViewById(ca.vanmulligen.bitcoinpricetracker.R.id.coinbasePrice);
         final Callback cb = callback;
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {

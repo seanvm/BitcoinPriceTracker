@@ -1,4 +1,4 @@
-package com.example.bitcoinpricetracker;
+package ca.vanmulligen.bitcoinpricetracker;
 
 import org.junit.Test;
 

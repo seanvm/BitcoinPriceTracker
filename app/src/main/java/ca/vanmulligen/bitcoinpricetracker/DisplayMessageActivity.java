@@ -1,4 +1,4 @@
-package com.example.bitcoinpricetracker;
+package ca.vanmulligen.bitcoinpricetracker;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

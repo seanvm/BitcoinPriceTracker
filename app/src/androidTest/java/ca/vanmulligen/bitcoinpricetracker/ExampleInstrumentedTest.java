@@ -1,4 +1,4 @@
-package com.example.bitcoinpricetracker;
+package ca.vanmulligen.bitcoinpricetracker;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

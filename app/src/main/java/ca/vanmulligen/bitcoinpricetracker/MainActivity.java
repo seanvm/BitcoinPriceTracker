@@ -1,15 +1,14 @@
-package com.example.bitcoinpricetracker;
+package ca.vanmulligen.bitcoinpricetracker;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import com.example.bitcoinpricetracker.exchanges.CoinDesk;
-import com.example.bitcoinpricetracker.exchanges.Coinbase;
-import com.example.bitcoinpricetracker.exchanges.ExchangeService;
+import ca.vanmulligen.bitcoinpricetracker.exchanges.CoinDesk;
+import ca.vanmulligen.bitcoinpricetracker.exchanges.Coinbase;
+import ca.vanmulligen.bitcoinpricetracker.exchanges.ExchangeService;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String EXTRA_MESSAGE = "com.example.bitcoinpricetracker.MESSAGE";
+    public static final String EXTRA_MESSAGE = "ca.vanmulligen.bitcoinpricetracker.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

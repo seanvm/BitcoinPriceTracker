@@ -1,11 +1,11 @@
-package com.example.bitcoinpricetracker.exchanges;
+package ca.vanmulligen.bitcoinpricetracker.exchanges;
 
 import android.app.Activity;
 import android.view.View;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.example.bitcoinpricetracker.Callback;
+import ca.vanmulligen.bitcoinpricetracker.Callback;
 
 public class ExchangeService {
     View view;

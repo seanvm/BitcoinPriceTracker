@@ -1,4 +1,4 @@
-package com.example.bitcoinpricetracker;
+package ca.vanmulligen.bitcoinpricetracker;
 
 public interface Callback {
     void onSuccess();
