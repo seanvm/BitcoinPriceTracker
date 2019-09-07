@@ -3,6 +3,7 @@ package ca.vanmulligen.bitcoinpricetracker;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -19,16 +20,24 @@ import ca.vanmulligen.bitcoinpricetracker.exchanges.ExchangeService;
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "ca.vanmulligen.bitcoinpricetracker.MESSAGE";
     public List<ExchangeInfo> dataList = new ArrayList<>();
-    public RecyclerView recyclerView;
     public RecyclerView.Adapter adapter;
+    public SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        buildView();
+        populateView();
+    }
+
+    private void buildView(){
         setContentView(R.layout.activity_main);
 
+        swipeRefreshLayout = findViewById(R.id.swiperefresh);
+        swipeToRefreshListener();
 
-        recyclerView = findViewById(R.id.cardList);
+        RecyclerView recyclerView = findViewById(R.id.cardList);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -36,27 +45,33 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new RecyclerViewAdapter(dataList);
         recyclerView.setAdapter(adapter);
-
-        getBitcoinPrice(null);
     }
 
-    public void getBitcoinPrice(View view) {
-        showLoading();
+    private void populateView() {
+        clearView();
 
-        ExchangeService exchangeService = new ExchangeService(view, this, onFinishLoad());
+        ExchangeService exchangeService = new ExchangeService(this, onFinishLoad());
         exchangeService.setValueFromExchange(new CoinDesk(), "CAD");
         exchangeService.setValueFromExchange(new Coinbase(), "CAD");
     }
 
-    private void showLoading(){
-        //        findViewById(R.id.button2).setVisibility(View.GONE);
-        //        findViewById(R.id.progressBar1).setVisibility(View.VISIBLE);
+    private void clearView(){
+        dataList.clear();
+    }
+
+    private void swipeToRefreshListener(){
+        swipeRefreshLayout.setOnRefreshListener(
+            new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    populateView();
+                }
+            }
+        );
     }
 
     private void hideLoading(){
-
-        //        findViewById(R.id.progressBar1).setVisibility(View.GONE);
-        //        findViewById(R.id.button2).setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private Callback onFinishLoad(){
@@ -66,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 dataList.add(exchangeInfo);
                 Log.d("DataList","Add");
                 adapter.notifyDataSetChanged();
-                //hideLoading();
+                hideLoading();
             }
 
             @Override

@@ -23,9 +23,9 @@ public class Coinbase implements IExchange {
     private final String url = "https://api.coinbase.com/v2/prices/spot?currency=CAD";
     private TextView textElement;
 
-    public void call(String currency, RequestQueue queue, View view, Activity activity, Callback callback){
+    public void call(String currency, RequestQueue queue, Activity activity, Callback callback){
         textElement = activity.findViewById(ca.vanmulligen.bitcoinpricetracker.R.id.price);
-        final Callback cb = callback;
+        final Callback<ExchangeInfo> cb = callback;
         final String currencyPair = "BTC/CAD";
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -57,14 +57,14 @@ public class Coinbase implements IExchange {
             }
 
             DecimalFormat df = new DecimalFormat("##,##0.00");
-            return df.format(number).toString();
+            return df.format(number);
 
         } catch (JSONException e) {
             return "0";
         }
     }
 
-    public ExchangeInfo buildExchangeInfo(String price, String currencyPair){
+    private ExchangeInfo buildExchangeInfo(String price, String currencyPair){
         ExchangeInfo exchangeInfo = new ExchangeInfo();
         exchangeInfo.name = this.getClass().getSimpleName();
         exchangeInfo.price = price;

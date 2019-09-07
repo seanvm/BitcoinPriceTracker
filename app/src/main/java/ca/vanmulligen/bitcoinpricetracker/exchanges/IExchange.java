@@ -9,9 +9,9 @@ import ca.vanmulligen.bitcoinpricetracker.Callback;
 import org.json.JSONObject;
 
 public interface IExchange {
-    static final String url = "";
+    String url = "";
 
-    public void call(String currency, RequestQueue queue, View view, Activity activity, Callback callback);
-    public String parseResponse(JSONObject json);
+    void call(String currency, RequestQueue queue, Activity activity, Callback callback);
+    String parseResponse(JSONObject json);
 
 }

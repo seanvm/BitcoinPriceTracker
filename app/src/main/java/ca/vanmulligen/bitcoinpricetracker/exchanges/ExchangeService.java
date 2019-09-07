@@ -9,26 +9,22 @@ import com.android.volley.toolbox.Volley;
 import ca.vanmulligen.bitcoinpricetracker.Callback;
 
 public class ExchangeService {
-    View view;
-    Activity activity;
-    RequestQueue queue;
-    Callback callback; // Runs when all requests have finished
-    int requestCounter = 0; // Keeps track of volley requests
+    private Activity activity;
+    private RequestQueue queue;
+    private Callback<ExchangeInfo> callback;
 
-    public ExchangeService(View view, Activity _activity, Callback successCallback){
-        this.view = view;
+    public ExchangeService(Activity _activity, Callback<ExchangeInfo> successCallback){
         this.activity = _activity;
         this.queue = Volley.newRequestQueue(this.activity);
         this.callback = successCallback;
     }
 
     public void setValueFromExchange(IExchange exchange, String currency){
-        requestCounter++;
-        exchange.call(currency, queue, view, this.activity, callback());
+        exchange.call(currency, queue, this.activity, callback());
     }
 
     private Callback callback() {
-        final Callback cb = this.callback;
+        final Callback <ExchangeInfo>cb = this.callback;
         return new Callback<ExchangeInfo>() {
             @Override
             public void onSuccess(ExchangeInfo data) {
