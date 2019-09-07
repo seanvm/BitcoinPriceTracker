@@ -24,16 +24,16 @@ public class Coinbase implements IExchange {
     private TextView textElement;
 
     public void call(String currency, RequestQueue queue, View view, Activity activity, Callback callback){
-        textElement = activity.findViewById(ca.vanmulligen.bitcoinpricetracker.R.id.coinbasePrice);
+        textElement = activity.findViewById(ca.vanmulligen.bitcoinpricetracker.R.id.price);
         final Callback cb = callback;
+        final String currencyPair = "BTC/CAD";
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                String value = parseResponse(response);
+                String price = parseResponse(response);
 
-                textElement.setText(value);
-                cb.onSuccess();
+                cb.onSuccess(buildExchangeInfo(price, currencyPair));
             }
         }, new Response.ErrorListener() {
             @Override
@@ -62,5 +62,14 @@ public class Coinbase implements IExchange {
         } catch (JSONException e) {
             return "0";
         }
+    }
+
+    public ExchangeInfo buildExchangeInfo(String price, String currencyPair){
+        ExchangeInfo exchangeInfo = new ExchangeInfo();
+        exchangeInfo.name = this.getClass().getSimpleName();
+        exchangeInfo.price = price;
+        exchangeInfo.currencyPair = currencyPair;
+
+        return exchangeInfo;
     }
 }

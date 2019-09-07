@@ -1,6 +1,7 @@
 package ca.vanmulligen.bitcoinpricetracker.exchanges;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 
 import com.android.volley.RequestQueue;
@@ -28,18 +29,11 @@ public class ExchangeService {
 
     private Callback callback() {
         final Callback cb = this.callback;
-        return new Callback() {
+        return new Callback<ExchangeInfo>() {
             @Override
-            public void onSuccess() {
-                requestCounter--;
-                try{
-                    Thread.sleep(200);
-                }catch(InterruptedException e){
-                    System.out.println("Main thread interrupted");
-                }
-                if (requestCounter == 0) {
-                    cb.onSuccess();
-                }
+            public void onSuccess(ExchangeInfo data) {
+                Log.d("Callback","Success");
+                cb.onSuccess(data);
             }
 
             @Override
