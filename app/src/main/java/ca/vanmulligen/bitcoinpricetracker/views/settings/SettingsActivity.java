@@ -1,23 +1,15 @@
 package ca.vanmulligen.bitcoinpricetracker.views.settings;
 
-import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.widget.AdapterView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.vanmulligen.bitcoinpricetracker.R;
-import ca.vanmulligen.bitcoinpricetracker.exchanges.CoinDesk;
-import ca.vanmulligen.bitcoinpricetracker.exchanges.Coinbase;
-import ca.vanmulligen.bitcoinpricetracker.exchanges.ExchangeInfoDTO;
-import ca.vanmulligen.bitcoinpricetracker.exchanges.ExchangeService;
-import ca.vanmulligen.bitcoinpricetracker.views.main.MainViewAdapter;
 
 public class SettingsActivity extends AppCompatActivity {
     public List<SettingsDTO> dataList = new ArrayList<>();

@@ -18,7 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ca.vanmulligen.bitcoinpricetracker.views.settings.SettingsActivity" android:parentActivityName="ca.vanmulligen.bitcoinpricetracker.views.main.MainActivity" ></activity>
+        <activity android:name="ca.vanmulligen.bitcoinpricetracker.views.settings.SettingsActivity" android:parentActivityName="ca.vanmulligen.bitcoinpricetracker.views.main.MainActivity" android:label="@string/settings_activity_title">            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="ca.vanmulligen.bitcoinpricetracker.views.main.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
