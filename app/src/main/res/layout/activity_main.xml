@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.vanmulligen.bitcoinpricetracker.MainActivity">
+    tools:context="ca.vanmulligen.bitcoinpricetracker.views.main.MainActivity">
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

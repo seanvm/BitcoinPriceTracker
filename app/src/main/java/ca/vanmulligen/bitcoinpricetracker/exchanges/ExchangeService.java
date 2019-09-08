@@ -2,7 +2,6 @@ package ca.vanmulligen.bitcoinpricetracker.exchanges;
 
 import android.app.Activity;
 import android.util.Log;
-import android.view.View;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -11,9 +10,9 @@ import ca.vanmulligen.bitcoinpricetracker.Callback;
 public class ExchangeService {
     private Activity activity;
     private RequestQueue queue;
-    private Callback<ExchangeInfo> callback;
+    private Callback<ExchangeInfoDTO> callback;
 
-    public ExchangeService(Activity _activity, Callback<ExchangeInfo> successCallback){
+    public ExchangeService(Activity _activity, Callback<ExchangeInfoDTO> successCallback){
         this.activity = _activity;
         this.queue = Volley.newRequestQueue(this.activity);
         this.callback = successCallback;
@@ -24,10 +23,10 @@ public class ExchangeService {
     }
 
     private Callback callback() {
-        final Callback <ExchangeInfo>cb = this.callback;
-        return new Callback<ExchangeInfo>() {
+        final Callback <ExchangeInfoDTO>cb = this.callback;
+        return new Callback<ExchangeInfoDTO>() {
             @Override
-            public void onSuccess(ExchangeInfo data) {
+            public void onSuccess(ExchangeInfoDTO data) {
                 Log.d("Callback","Success");
                 cb.onSuccess(data);
             }
