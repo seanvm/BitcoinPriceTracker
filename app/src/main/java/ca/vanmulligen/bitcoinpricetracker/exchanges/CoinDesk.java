@@ -1,7 +1,6 @@
 package ca.vanmulligen.bitcoinpricetracker.exchanges;
 
 import android.app.Activity;
-import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -26,7 +25,7 @@ public class CoinDesk implements IExchange {
 
     public void call(String currency, RequestQueue queue, Activity activity, Callback callback){
         textElement = activity.findViewById(R.id.price);
-        final Callback <ExchangeInfo>cb = callback;
+        final Callback <ExchangeInfoDTO>cb = callback;
         final String currencyPair = "BTC/CAD";
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -65,8 +64,8 @@ public class CoinDesk implements IExchange {
         }
     }
 
-    private ExchangeInfo buildExchangeInfo(String price, String currencyPair){
-        ExchangeInfo exchangeInfo = new ExchangeInfo();
+    private ExchangeInfoDTO buildExchangeInfo(String price, String currencyPair){
+        ExchangeInfoDTO exchangeInfo = new ExchangeInfoDTO();
         exchangeInfo.name = this.getClass().getSimpleName();
         exchangeInfo.price = price;
         exchangeInfo.currencyPair = currencyPair;
