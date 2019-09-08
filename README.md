@@ -1,10 +1,10 @@
 # Bitcoin Price Tracker
 
-This is a very basic Android app written in Java that retrieves the current Bitcoin price (in CAD) from Coinbase and CoinDesk. The app supports Android 7+.
+This is a very basic Android app written in Java that retrieves the current Bitcoin price from popular exchanges. The app supports Android 7+.
 
-<p>
-  <img src="./screenshot.png" alt="Bitcoin Price Tracker UI"
-       width="200px">
+<p float="left">
+  <img src="./screenshots/main.png" width="200" hspace="20" />
+  <img src="./screenshots/settings.png" width="200" /> 
 </p>
 
 ## Download Latest Release
