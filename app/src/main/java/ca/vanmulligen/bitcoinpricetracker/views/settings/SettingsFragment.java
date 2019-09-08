@@ -36,6 +36,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         preference.setKey(setting.settingsKey);
         preference.setTitle(setting.settingsTitle);
         preference.setSummary(setting.description);
+        preference.setDefaultValue(setting.defaultVal);
 
         screen.addPreference(preference);
     }
