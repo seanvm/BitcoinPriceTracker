@@ -21,23 +21,21 @@ import java.util.Locale;
 
 public abstract class BaseExchange implements IExchange {
     private String url;
-    String currencyPair = "BTC/CAD";
+    String currencyPair = "";
 
-    protected String getUrl() {
+    protected String getUrl(String currency) {
         return url;
-    }
-
-    protected void setUrl(String url) {
-        this.url = url;
     }
 
     public void call(String currency, RequestQueue queue, Activity activity, Callback callback){
         final Callback<ExchangeInfoDTO> cb = callback;
-        Log.d("hi", this.getUrl());
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, this.getUrl(), null, new Response.Listener<JSONObject>() {
+        currencyPair = "BTC/" + currency;
+        final String currencyToParse = currency;
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, this.getUrl(currency), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                String price = parseResponse(response);
+                String price = parseResponse(response, currencyToParse);
 
                 cb.onSuccess(buildExchangeInfo(price, currencyPair));
             }
@@ -50,7 +48,7 @@ public abstract class BaseExchange implements IExchange {
         queue.add(jsObjRequest);
     }
 
-    public abstract String parseResponse(JSONObject json);
+    public abstract String parseResponse(JSONObject json, String currency);
 
     public String formatNumber(String value) {
         NumberFormat format = NumberFormat.getInstance(Locale.CANADA);

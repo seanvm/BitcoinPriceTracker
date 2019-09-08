@@ -12,6 +12,6 @@ public interface IExchange {
     String url = "";
 
     void call(String currency, RequestQueue queue, Activity activity, Callback callback);
-    String parseResponse(JSONObject json);
+    String parseResponse(JSONObject json, String currency);
 
 }

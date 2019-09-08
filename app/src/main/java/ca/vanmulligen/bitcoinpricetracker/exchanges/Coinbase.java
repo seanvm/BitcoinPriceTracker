@@ -4,11 +4,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Coinbase extends BaseExchange implements IExchange {
-    public Coinbase(){
-        this.setUrl("https://api.coinbase.com/v2/prices/spot?currency=CAD");
+    protected String getUrl(String currency){
+        return "https://api.coinbase.com/v2/prices/spot?currency=" + currency;
     }
 
-    public String parseResponse(JSONObject json){
+    public String parseResponse(JSONObject json, String currency){
         try {
             String bigNumber = json.getJSONObject("data").getString("amount");
             return formatNumber(bigNumber);
