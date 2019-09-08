@@ -2,11 +2,15 @@ package ca.vanmulligen.bitcoinpricetracker.exchanges;
 
 public class ExchangeFactory {
     public IExchange getExchange(String exchangeType){
-        if(exchangeType.equalsIgnoreCase("COINDESK")){
-            return new CoinDesk();
-        }else if(exchangeType.equalsIgnoreCase("COINBASE")){
-            return new Coinbase();
+        switch(exchangeType.toUpperCase()) {
+            case "COINDESK":
+                return new CoinDesk();
+            case "COINBASE":
+                return new Coinbase();
+            case "BLOCKCHAIN":
+                return new Blockchain();
+            default:
+                return null;
         }
-        return null;
     }
 }

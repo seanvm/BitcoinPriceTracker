@@ -30,8 +30,9 @@ public class ExchangeService {
 
     public ArrayList<ExchangeSettingDTO> getExchangeSettings(){
         ArrayList<ExchangeSettingDTO> exchanges = new ArrayList();
-        exchanges.add(new ExchangeSettingDTO("Coinbase", "Coinbase BTC/CAD", "exchanges.coinbase", "Enable rates for Coinbase"));
-        exchanges.add(new ExchangeSettingDTO("CoinDesk", "CoinDesk BTC/CAD", "exchanges.coindesk", "Enable rates for CoinDesk"));
+        exchanges.add(new ExchangeSettingDTO("Coinbase", "Coinbase BTC/CAD", "exchanges.coinbase", "CAD", "Enable rates for Coinbase", true));
+        exchanges.add(new ExchangeSettingDTO("CoinDesk", "CoinDesk BTC/CAD", "exchanges.coindesk", "CAD","Enable rates for CoinDesk", true));
+        exchanges.add(new ExchangeSettingDTO("Blockchain", "Blockchain BTC/USD", "exchanges.blockchain", "USD","Enable rates for Blockchain", false));
 
         return exchanges;
     }
