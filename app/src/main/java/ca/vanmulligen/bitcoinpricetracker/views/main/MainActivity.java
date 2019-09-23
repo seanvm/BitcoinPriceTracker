@@ -9,19 +9,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.TreeMap;
 
 import ca.vanmulligen.bitcoinpricetracker.Callback;
 import ca.vanmulligen.bitcoinpricetracker.R;
-import ca.vanmulligen.bitcoinpricetracker.exchanges.CoinDesk;
-import ca.vanmulligen.bitcoinpricetracker.exchanges.Coinbase;
 import ca.vanmulligen.bitcoinpricetracker.exchanges.ExchangeFactory;
 import ca.vanmulligen.bitcoinpricetracker.exchanges.ExchangeInfoDTO;
 import ca.vanmulligen.bitcoinpricetracker.exchanges.ExchangeService;
@@ -30,15 +25,18 @@ import ca.vanmulligen.bitcoinpricetracker.exchanges.IExchange;
 import ca.vanmulligen.bitcoinpricetracker.views.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity {
-    public List<ExchangeInfoDTO> dataList = new ArrayList<>();
+    public TreeMap<String, ExchangeInfoDTO> dataMap = new TreeMap<>(); // Use TreeMap to for natural ordering of keys
     public RecyclerView.Adapter adapter;
+    public RecyclerView recyclerView;
     public SwipeRefreshLayout swipeRefreshLayout;
+    public ExchangeService exchangeService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         buildView();
+        showLoading();
         populateView();
     }
 
@@ -69,13 +67,13 @@ public class MainActivity extends AppCompatActivity {
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         swipeToRefreshListener();
 
-        RecyclerView recyclerView = findViewById(R.id.cardList);
+        recyclerView = findViewById(R.id.cardList);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new MainViewAdapter(dataList);
+        adapter = new MainViewAdapter(dataMap);
         recyclerView.setAdapter(adapter);
     }
 
@@ -85,11 +83,31 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
 
-        ExchangeFactory exchangeFactory = new ExchangeFactory();
-        ExchangeService exchangeService = new ExchangeService(this, onFinishLoad());
+        this.exchangeService = new ExchangeService(this, onFinishLoad());
         ArrayList<ExchangeSettingDTO> exchanges = exchangeService.getExchangeSettings();
 
-        // Get preferences for each exchange, get prices if exchange enabled
+        // Get preferences for each exchange
+        exchangeService.setRequestCounter(getNumberOfRequestsToMake(sharedPreferences, exchanges));
+
+        // Get prices if exchange enabled
+        getPricesFromExchanges(sharedPreferences, exchanges);
+    }
+
+    private int getNumberOfRequestsToMake(SharedPreferences sharedPreferences, ArrayList<ExchangeSettingDTO> exchanges){
+        int requestCounter = 0;
+        for(int i = 0; i < exchanges.size(); i++){
+            boolean preference = sharedPreferences.getBoolean(exchanges.get(i).settingsKey, exchanges.get(i).defaultVal);
+            if(preference){
+                requestCounter++;
+            }
+        }
+
+        return requestCounter;
+    }
+
+    private void getPricesFromExchanges(SharedPreferences sharedPreferences, ArrayList<ExchangeSettingDTO> exchanges) {
+        ExchangeFactory exchangeFactory = new ExchangeFactory();
+
         for(int i = 0; i < exchanges.size(); i++){
             boolean preference = sharedPreferences.getBoolean(exchanges.get(i).settingsKey, exchanges.get(i).defaultVal);
             if(preference){
@@ -100,7 +118,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clearView(){
-        dataList.clear();
+        dataMap.clear();
+        adapter = new MainViewAdapter(dataMap);
+        recyclerView.setAdapter(adapter);
     }
 
     private void swipeToRefreshListener(){
@@ -117,23 +137,20 @@ public class MainActivity extends AppCompatActivity {
     private void hideLoading(){
         swipeRefreshLayout.setRefreshing(false);
     }
+    private void showLoading(){
+        swipeRefreshLayout.setRefreshing(true);
+    }
 
     private Callback onFinishLoad(){
         return new Callback<ExchangeInfoDTO>() {
             @Override
             public void onSuccess(ExchangeInfoDTO exchangeInfo) {
-                dataList.add(exchangeInfo);
+                recordExchangeValues(exchangeInfo);
 
-                Collections.sort(dataList, new Comparator<ExchangeInfoDTO>() {
-                    @Override
-                    public int compare(ExchangeInfoDTO e1, ExchangeInfoDTO e2) {
-                        return e1.name.compareTo(e2.name);
-                    }
-                });
-
-                Log.d("DataList","Add");
-                adapter.notifyDataSetChanged();
-                hideLoading();
+                if(exchangeInfo.finished){
+                    adapter.notifyDataSetChanged();
+                    hideLoading();
+                }
             }
 
             @Override
@@ -141,6 +158,15 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(err);
             }
         };
+    }
+
+    private void recordExchangeValues(ExchangeInfoDTO exchangeInfo) {
+        if(dataMap.containsKey(exchangeInfo.name)){
+            ExchangeInfoDTO dto = dataMap.get(exchangeInfo.name);
+            dto.prices.put(exchangeInfo.currencyPair, exchangeInfo.price);
+        } else {
+            dataMap.put(exchangeInfo.name, exchangeInfo);
+        }
     }
 }
 

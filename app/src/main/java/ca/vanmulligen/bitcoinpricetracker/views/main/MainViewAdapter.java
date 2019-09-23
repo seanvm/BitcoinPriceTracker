@@ -1,39 +1,47 @@
 package ca.vanmulligen.bitcoinpricetracker.views.main;
 
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 import ca.vanmulligen.bitcoinpricetracker.R;
 import ca.vanmulligen.bitcoinpricetracker.exchanges.ExchangeInfoDTO;
 
 public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.ExchangeViewHolder>{
-    private List<ExchangeInfoDTO> exchangeInfoList;
+    private TreeMap<String, ExchangeInfoDTO> exchangeInfoMap;
 
-    public MainViewAdapter(List<ExchangeInfoDTO> exchangeInfoList) {
-        this.exchangeInfoList = exchangeInfoList;
+    MainViewAdapter(TreeMap<String, ExchangeInfoDTO> exchangeInfoMap) {
+        this.exchangeInfoMap = exchangeInfoMap;
     }
 
     @Override
     public int getItemCount() {
-        return exchangeInfoList.size();
+        return exchangeInfoMap.size();
     }
 
     @Override
     public void onBindViewHolder(ExchangeViewHolder exchangeViewHolder, int i) {
-        ExchangeInfoDTO ci = exchangeInfoList.get(i);
+        ExchangeInfoDTO ci = (new ArrayList<>(exchangeInfoMap.values())).get(i);
+
         exchangeViewHolder.vName.setText(ci.name);
-        exchangeViewHolder.vPrice.setText(ci.price);
-        exchangeViewHolder.vCurrencyPair.setText(ci.currencyPair);
+        exchangeViewHolder.setPrices(ci);
     }
 
     @Override
     public ExchangeViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        // This is only one cardLayout - there can be many
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.card_layout, viewGroup, false);
@@ -41,16 +49,40 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.Exchan
         return new ExchangeViewHolder(itemView);
     }
 
-    public static class ExchangeViewHolder extends RecyclerView.ViewHolder {
-        public TextView vName;
-        public TextView vPrice;
-        public TextView vCurrencyPair;
+    static class ExchangeViewHolder extends RecyclerView.ViewHolder {
+        View view;
+        TextView vName;
+        TextView vPrice;
+        TextView vCurrencyPair;
 
-        public ExchangeViewHolder(View v) {
+        ExchangeViewHolder(View v) {
             super(v);
-            vName =  (TextView) v.findViewById(R.id.name);
-            vPrice =  (TextView) v.findViewById(R.id.price);
-            vCurrencyPair =  (TextView) v.findViewById(R.id.currencyPair);
+
+            view = v;
+            vName = v.findViewById(R.id.name);
+        }
+
+        void setPrices(ExchangeInfoDTO ci){
+            TableLayout tl = view.findViewById(R.id.exchangeTableLayout);
+
+            for (Map.Entry<String, String> entry : ci.prices.entrySet()) {
+                Log.d("add price", "add price " + entry.getValue());
+                String price = entry.getValue();
+                String currencyPair = entry.getKey();
+
+                View priceRow = LayoutInflater.
+                        from(view.getContext()).
+                        inflate(R.layout.current_price_row, null);
+
+                Log.d("setPrice", currencyPair);
+                vCurrencyPair =  priceRow.findViewById(R.id.currencyPair);
+                vCurrencyPair.setText((currencyPair));
+
+                vPrice = priceRow.findViewById(R.id.price);
+                vPrice.setText((price));
+
+                tl.addView(priceRow, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            }
         }
     }
 }

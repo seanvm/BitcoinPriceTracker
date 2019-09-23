@@ -17,11 +17,14 @@ import org.json.JSONObject;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public abstract class BaseExchange implements IExchange {
     private String url;
-    String currencyPair = "";
+    private String currencyPair = "";
 
     protected String getUrl(String currency) {
         return url;
@@ -71,6 +74,21 @@ public abstract class BaseExchange implements IExchange {
         exchangeInfo.price = price;
         exchangeInfo.currencyPair = currencyPair;
 
+        if(!exchangeInfo.prices.containsKey(currencyPair)){
+            exchangeInfo.prices.put(currencyPair, price);
+        }
+
+        logExchangeInfo(exchangeInfo);
+
         return exchangeInfo;
+    }
+
+    private void logExchangeInfo(ExchangeInfoDTO exchangeInfo){
+        Map<String, String> map = exchangeInfo.prices;
+        List<String> keys = new ArrayList<>(map.keySet());
+
+        for (String key: keys) {
+            System.out.println(key + ": " + map.get(key));
+        }
     }
 }
