@@ -50,7 +50,6 @@ public class ExchangeService {
         return new Callback<ExchangeInfoDTO>() {
             @Override
             public void onSuccess(ExchangeInfoDTO data) {
-                Log.d("CallbackCount",Integer.toString(requestCounter));
                 requestCounter--;
                 if(requestCounter == 0){
                     data.finished = true;

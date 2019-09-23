@@ -66,7 +66,6 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.Exchan
             TableLayout tl = view.findViewById(R.id.exchangeTableLayout);
 
             for (Map.Entry<String, String> entry : ci.prices.entrySet()) {
-                Log.d("add price", "add price " + entry.getValue());
                 String price = entry.getValue();
                 String currencyPair = entry.getKey();
 
@@ -74,7 +73,6 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.Exchan
                         from(view.getContext()).
                         inflate(R.layout.current_price_row, null);
 
-                Log.d("setPrice", currencyPair);
                 vCurrencyPair =  priceRow.findViewById(R.id.currencyPair);
                 vCurrencyPair.setText((currencyPair));
 
