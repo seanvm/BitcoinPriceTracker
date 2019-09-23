@@ -4,7 +4,7 @@ This is a very basic Android app written in Java that retrieves the current Bitc
 
 <p float="left">
   <img src="./screenshots/main.png" width="200" hspace="20" />
-  <img src="./screenshots/settings.png" width="200" /> 
+  <img src="./screenshots/settings.png" width="200" hspace="20" /> 
 </p>
 
 ## Download Latest Release
