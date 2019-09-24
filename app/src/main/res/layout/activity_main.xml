@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <ca.vanmulligen.bitcoinpricetracker.views.main.AnimatedRecyclerView
             android:id="@+id/cardList"
             android:tag="recyclerView"
             android:layout_width="match_parent"
@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
 
-        </androidx.recyclerview.widget.RecyclerView>
+        </ca.vanmulligen.bitcoinpricetracker.views.main.AnimatedRecyclerView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
